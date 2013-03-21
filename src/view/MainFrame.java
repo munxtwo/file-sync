@@ -11,8 +11,6 @@ import javax.swing.JFrame;
  */
 public class MainFrame extends JFrame {
 	
-//	private static MainFrame frame = new MainFrame();
-
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -22,10 +20,6 @@ public class MainFrame extends JFrame {
 		super("File Syncer");
 		createUI();
 	}
-
-//	public static MainFrame getMainFrame() {
-//		return frame;
-//	}
 
 	/**
 	 * Initialize frame
@@ -38,7 +32,6 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void setFrameSettings() {
-		setSize(800, 600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);

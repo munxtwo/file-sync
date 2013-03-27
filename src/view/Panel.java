@@ -29,15 +29,20 @@ public class Panel extends JPanel {
 	public JScrollPane targetScrollPane;
 	public JButton browseSourceButton;
 	public JButton browseTargetButton;
+	public JButton syncSelectedButton;
+	public JButton syncAllButton;
 	public JFileChooser sourceFileChooser;
 	public JFileChooser targetFileChooser;
+	
 	
 	public Panel() {
 		setLayout(new GridBagLayout());
 		// Buttons
 		createBrowseSourceButton();
 		createBrowseTargetButton();
-		createPanelDivider();
+//		createSyncSelectedButton();
+//		createSyncAllButton();
+//		createPanelDivider();
 	}
 	
 	public void createBrowseSourceButton() {
@@ -61,6 +66,7 @@ public class Panel extends JPanel {
 		String browseTargetButtonToolTipText = "The target folder is the folder you would like to sync files to.";
 		browseTargetButton = new JButton(browseTargetButtonLabel);
 		browseTargetButton.setToolTipText(browseTargetButtonToolTipText);
+		browseTargetButton.setEnabled(false);
 		
 		BrowseTargetButtonListener browseTargetButtonListener = new EventListeners(this).new BrowseTargetButtonListener();
 		browseTargetButton.addActionListener(browseTargetButtonListener);
@@ -69,6 +75,46 @@ public class Panel extends JPanel {
 			.setAnchor(GridBagConstraints.NORTHWEST)
 			.setWeight(1, 0.05)
 			.setFill(GridBagConstraints.NONE)
+			.setInsets(5));
+	}
+	
+	public void createSyncSelectedButton() {
+		String syncSelectedButtonLabel = ">";
+		String syncSelectedButtonToolTipText = "Sync selected files only.";
+		syncSelectedButton = new JButton(syncSelectedButtonLabel);
+		syncSelectedButton.setToolTipText(syncSelectedButtonToolTipText);
+		
+		add(syncSelectedButton, new GBC(3, 4, 1, 1)
+			.setAnchor(GridBagConstraints.LINE_END)
+			.setWeight(0, 0)
+			.setFill(GridBagConstraints.HORIZONTAL)
+			.setInsets(5));
+	}
+	
+	public void createSyncAllButton() {
+		String syncAllButtonLabel = ">>";
+		String syncAllButtonToolTipText = "Sync all files in folder.";
+		syncAllButton = new JButton(syncAllButtonLabel);
+		syncAllButton.setToolTipText(syncAllButtonToolTipText);
+		
+		add(syncAllButton, new GBC(3, 7, 1, 1)
+			.setAnchor(GridBagConstraints.LINE_START)
+			.setWeight(0, 0)
+			.setFill(GridBagConstraints.HORIZONTAL)
+			.setInsets(5));
+	}
+	
+	public void createFillerButton(int gridx, int gridy, int widthx, int widthy) {
+		JButton fillerButton = new JButton(" ");
+		fillerButton.setBorder(null);
+		fillerButton.setOpaque(false);
+		fillerButton.setContentAreaFilled(false);
+		fillerButton.setBorderPainted(false);
+		
+		add(fillerButton, new GBC(gridx, gridy, widthx, widthy)
+			.setAnchor(GridBagConstraints.LINE_START)
+			.setWeight(0, 0)
+			.setFill(GridBagConstraints.HORIZONTAL)
 			.setInsets(5));
 	}
 	

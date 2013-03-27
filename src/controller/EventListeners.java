@@ -43,9 +43,8 @@ public class EventListeners {
 		public void actionPerformed(ActionEvent e) {
 			String path = getFolderPath();
 			panel.createSourcePane(path);
-			panel.revalidate();
-			panel.repaint();
-//			panel.updateUI();
+			panel.browseTargetButton.setEnabled(true);
+			panel.updateUI();
 		}
 	}
 	
@@ -55,6 +54,10 @@ public class EventListeners {
 		public void actionPerformed(ActionEvent e) {
 			String path = getFolderPath();
 			panel.createTargetPane(path);
+			panel.createSyncSelectedButton();
+			panel.createSyncAllButton();
+			panel.createFillerButton(3, 2, 1, 2);
+			panel.createFillerButton(3, 5, 1, 2);
 			panel.updateUI();
 		}
 	}

@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -16,6 +17,8 @@ import lib.GBC;
 import controller.EventListeners;
 import controller.EventListeners.BrowseSourceButtonListener;
 import controller.EventListeners.BrowseTargetButtonListener;
+import controller.EventListeners.SyncAllButtonListener;
+import controller.EventListeners.SyncSelectedButtonListener;
 
 /**
  * @author ktay
@@ -34,7 +37,6 @@ public class Panel extends JPanel {
 	public JFileChooser sourceFileChooser;
 	public JFileChooser targetFileChooser;
 	
-	
 	public Panel() {
 		setLayout(new GridBagLayout());
 		// Buttons
@@ -47,7 +49,7 @@ public class Panel extends JPanel {
 	
 	public void createBrowseSourceButton() {
 		String browseSourceButtonLabel = "Choose Source Folder";
-		String browseSourceButtonToolTipText = "The source folder contains the files you would like to sync.";
+		String browseSourceButtonToolTipText = "The source folder contains the files you would like to sync";
 		browseSourceButton = new JButton(browseSourceButtonLabel);
 		browseSourceButton.setToolTipText(browseSourceButtonToolTipText);
 		
@@ -63,7 +65,7 @@ public class Panel extends JPanel {
 	
 	public void createBrowseTargetButton() {
 		String browseTargetButtonLabel = "Choose Target Folder";
-		String browseTargetButtonToolTipText = "The target folder is the folder you would like to sync files to.";
+		String browseTargetButtonToolTipText = "The target folder is the folder you would like to sync files to";
 		browseTargetButton = new JButton(browseTargetButtonLabel);
 		browseTargetButton.setToolTipText(browseTargetButtonToolTipText);
 		browseTargetButton.setEnabled(false);
@@ -80,9 +82,12 @@ public class Panel extends JPanel {
 	
 	public void createSyncSelectedButton() {
 		String syncSelectedButtonLabel = ">";
-		String syncSelectedButtonToolTipText = "Sync selected files only.";
+		String syncSelectedButtonToolTipText = "Sync selected files only";
 		syncSelectedButton = new JButton(syncSelectedButtonLabel);
 		syncSelectedButton.setToolTipText(syncSelectedButtonToolTipText);
+		
+		SyncSelectedButtonListener syncSelectedButtonListener = new EventListeners(this).new SyncSelectedButtonListener();
+		syncSelectedButton.addActionListener(syncSelectedButtonListener);
 		
 		add(syncSelectedButton, new GBC(3, 4, 1, 1)
 			.setAnchor(GridBagConstraints.LINE_END)
@@ -93,9 +98,12 @@ public class Panel extends JPanel {
 	
 	public void createSyncAllButton() {
 		String syncAllButtonLabel = ">>";
-		String syncAllButtonToolTipText = "Sync all files in folder.";
+		String syncAllButtonToolTipText = "Sync all files in folder";
 		syncAllButton = new JButton(syncAllButtonLabel);
 		syncAllButton.setToolTipText(syncAllButtonToolTipText);
+		
+		SyncAllButtonListener syncAllButtonListener = new EventListeners(this).new SyncAllButtonListener();
+		syncAllButton.addActionListener(syncAllButtonListener);
 		
 		add(syncAllButton, new GBC(3, 7, 1, 1)
 			.setAnchor(GridBagConstraints.LINE_START)
@@ -153,6 +161,10 @@ public class Panel extends JPanel {
 			.setAnchor(GridBagConstraints.CENTER)
 			.setFill(GridBagConstraints.BOTH)
 			.setInsets(0, 5, 5, 5));
+	}
+	
+	public void dialogMsg(String msg, String title, int msgType) {
+		JOptionPane.showMessageDialog(this, msg, title, msgType);
 	}
 
 }

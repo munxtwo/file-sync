@@ -29,6 +29,7 @@ public class MainFrame extends JFrame {
 		Menu menu = new Menu();
 		add(panel);
 		setJMenuBar(menu);
+		menu.addListeners(panel);
 	}
 	
 	public void setFrameSettings() {

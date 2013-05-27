@@ -41,6 +41,31 @@ public class EventListeners {
 		return chosenDirPath;
 	}
 
+	private boolean isSourceDirEqualsTargetDir(String sourcePath,
+			String targetPath) {
+		if (sourcePath.equals(targetPath)) {
+			return true;
+		}
+		return false;
+	}
+
+	private void setSyncButtonsEnabled(boolean isEnabled) {
+		panel.syncSelectedButton.setEnabled(isEnabled);
+		panel.syncAllButton.setEnabled(isEnabled);
+	}
+	
+	private void syncFiles(File[] files) {
+		panel.createProgressMonitor();
+		task = new SyncFilesTask(panel, files);
+		task.addPropertyChangeListener(new EventListeners.SyncFilesProgressListener());
+		task.execute();
+		setSyncButtonsEnabled(false);
+	}
+	
+	
+	/*
+	 * Panel listeners
+	 */
 	public class BrowseSourceButtonListener implements ActionListener {
 
 		@Override
@@ -149,24 +174,4 @@ public class EventListeners {
 		
 	}
 
-	private boolean isSourceDirEqualsTargetDir(String sourcePath,
-			String targetPath) {
-		if (sourcePath.equals(targetPath)) {
-			return true;
-		}
-		return false;
-	}
-
-	private void setSyncButtonsEnabled(boolean isEnabled) {
-		panel.syncSelectedButton.setEnabled(isEnabled);
-		panel.syncAllButton.setEnabled(isEnabled);
-	}
-	
-	private void syncFiles(File[] files) {
-		panel.createProgressMonitor();
-		task = new SyncFilesTask(panel, files);
-		task.addPropertyChangeListener(new EventListeners.SyncFilesProgressListener());
-		task.execute();
-		setSyncButtonsEnabled(false);
-	}
 }

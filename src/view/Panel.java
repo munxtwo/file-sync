@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.ProgressMonitor;
 
 import lib.GBC;
 import controller.EventListeners;
@@ -36,15 +37,13 @@ public class Panel extends JPanel {
 	public JButton syncAllButton;
 	public JFileChooser sourceFileChooser;
 	public JFileChooser targetFileChooser;
+	public ProgressMonitor progressMonitor;
 	
 	public Panel() {
 		setLayout(new GridBagLayout());
 		// Buttons
 		createBrowseSourceButton();
 		createBrowseTargetButton();
-//		createSyncSelectedButton();
-//		createSyncAllButton();
-//		createPanelDivider();
 	}
 	
 	public void createBrowseSourceButton() {
@@ -166,5 +165,15 @@ public class Panel extends JPanel {
 	public void dialogMsg(String msg, String title, int msgType) {
 		JOptionPane.showMessageDialog(this, msg, title, msgType);
 	}
+	
+	public int confirmDialog(String msg, String title, int msgType) {
+		return JOptionPane.showConfirmDialog(this, msg, title, JOptionPane.YES_NO_OPTION);
+	}
 
+	public void createProgressMonitor() {
+		progressMonitor = new ProgressMonitor(this, "Syncing files ...", "", 0, 100);
+		progressMonitor.setProgress(0);
+		progressMonitor.setMillisToDecideToPopup(0);
+		progressMonitor.setMillisToPopup(0);
+	}
 }

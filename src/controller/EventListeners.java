@@ -124,6 +124,13 @@ public class EventListeners {
 			}
 			
 			File[] selectedFiles = panel.sourceFileChooser.getSelectedFiles();
+			if (selectedFiles.length == 0) {
+				panel.dialogMsg(
+						"No files or directory selected!\n" +
+						"Please select a file or directory first OR choose the '>>' (sync all) option",
+						"ERROR!", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			syncFiles(selectedFiles);
 		}
 

@@ -12,6 +12,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.apache.log4j.Logger;
+
 import view.Panel;
 
 /**
@@ -19,6 +21,8 @@ import view.Panel;
  * 
  */
 public class EventListeners {
+	
+	private static Logger logger = Logger.getLogger(EventListeners.class);
 
 	private Panel panel;
 	private SyncFilesTask task;
@@ -77,6 +81,7 @@ public class EventListeners {
 			panel.createSourcePane(path);
 			panel.browseTargetButton.setEnabled(true);
 			panel.updateUI();
+			logger.info("Source folder: " + path);
 		}
 	}
 
@@ -91,6 +96,7 @@ public class EventListeners {
 				panel.dialogMsg(
 						"Target path cannot be the same as source path!",
 						"ERROR!", JOptionPane.ERROR_MESSAGE);
+				logger.error("Target path cannot be the same as source path!");
 				return;
 			}
 			else if (path.isEmpty()) {
@@ -102,6 +108,7 @@ public class EventListeners {
 			panel.createFillerButton(3, 2, 1, 2);
 			panel.createFillerButton(3, 5, 1, 2);
 			panel.updateUI();
+			logger.info("Target folder: " + path);
 		}
 	}
 
@@ -117,6 +124,7 @@ public class EventListeners {
 				panel.dialogMsg(
 						"Target path cannot be the same as source path!",
 						"ERROR!", JOptionPane.ERROR_MESSAGE);
+				logger.error("Target path cannot be the same as source path!");
 				return;
 			}
 			else if (sourcePath.isEmpty() || targetPath.isEmpty()) {
@@ -129,6 +137,7 @@ public class EventListeners {
 						"No files or directory selected!\n" +
 						"Please select a file or directory first OR choose the '>>' (sync all) option",
 						"ERROR!", JOptionPane.ERROR_MESSAGE);
+				logger.error("No files or directory selected!");
 				return;
 			}
 			syncFiles(selectedFiles);
@@ -148,6 +157,7 @@ public class EventListeners {
 				panel.dialogMsg(
 						"Target path cannot be the same as source path!",
 						"ERROR!", JOptionPane.ERROR_MESSAGE);
+				logger.error("Target path cannot be the same as source path!");
 				return;
 			} 
 			else if (sourcePath.isEmpty() || targetPath.isEmpty()) {
@@ -171,10 +181,17 @@ public class EventListeners {
 	            panel.progressMonitor.setNote(message);
 	            
 	            if (panel.progressMonitor.isCanceled() || task.isDone()) {
-	                if (panel.progressMonitor.isCanceled()) {
-	                    task.cancel(true);
-	                } 
-	                setSyncButtonsEnabled(true);
+                    if (panel.progressMonitor.isCanceled()) {
+                    	task.cancel(true);
+                    }
+//                    if (task.isCancelled()){
+//                    	logger.info("Sync cancelled!\n");
+//                    } 
+//                    else if (task.isDone()) {
+//                    }
+//                    logger.info("Sync completed!\n");
+                    panel.progressMonitor.close();
+//                    setSyncButtonsEnabled(true);
 	            }
 	        }			
 		}

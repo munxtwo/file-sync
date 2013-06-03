@@ -6,7 +6,6 @@ package driver;
 import java.awt.EventQueue;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import view.MainFrame;
 
@@ -29,7 +28,6 @@ public class Driver {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		PropertyConfigurator.configure("log.properties");
 		logger.info("Starting application");
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

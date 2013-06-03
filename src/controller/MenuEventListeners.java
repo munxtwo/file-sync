@@ -38,7 +38,7 @@ public class MenuEventListeners {
 		public void actionPerformed(ActionEvent e) {
 			String msg = "FileSyncer\n> Allows files to be synced between two folders\n" +
 					"> Copy files from source folder to target folder\n" +
-					"\nVersion: 1.0\n"
+					"\nVersion: 1.1\n"
 					+ "(c) Copyright munxtwo 2013\n";
 			panel.dialogMsg(msg, "About FileSyncer", JOptionPane.INFORMATION_MESSAGE);
 		}

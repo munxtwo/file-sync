@@ -22,6 +22,8 @@ public class SyncFilesTask extends SwingWorker<Boolean, Double> {
 	private int sourceDirNameLength;
 	private int numFiles;
 	private int count;
+	private boolean yesToAll;
+	private boolean noToAll;
 
 	public SyncFilesTask(Panel panel, File[] files) {
 		this.panel = panel;
@@ -31,6 +33,8 @@ public class SyncFilesTask extends SwingWorker<Boolean, Double> {
 		this.sourceDirNameLength = panel.sourceFileChooser.getCurrentDirectory().getAbsolutePath().length();
 		this.numFiles = files.length;
 		this.count = 0;
+		this.yesToAll = false;
+		this.noToAll = false;
 	}
 
 	@Override
@@ -68,7 +72,8 @@ public class SyncFilesTask extends SwingWorker<Boolean, Double> {
 		}
 		panel.syncAllButton.setEnabled(true);
 		panel.syncSelectedButton.setEnabled(true);
-		panel.sourceFileChooser.setSelectedFiles(new File[] { new File("") });
+		panel.sourceFileChooser.setSelectedFiles(new File[] {new File("")}); 
+		panel.sourceFileChooser.setSelectedFiles(new File[0]); 
 	}
 	
 	private void syncFile(File sourceFile) {
@@ -98,14 +103,36 @@ public class SyncFilesTask extends SwingWorker<Boolean, Double> {
 	private void syncExistingFile(File file, File targetFile) {
 		if (targetFile.exists() && !isCancelled()) {
 			if (FileUtils.isFileNewer(targetFile, file)) {
-				int option = panel.confirmDialog("The file '" + targetFile
-						+ "' already exists"
-						+ "\nand is newer than the file you wish to sync with."
-						+ "\nDo you wish to overwrite this file?",
-						"Target File Is Newer!", JOptionPane.QUESTION_MESSAGE);
-				if (option == JOptionPane.NO_OPTION) {
-					logger.info("Skipping '" + file + "' because it already exists and is newer");
+				if (noToAll) {
+					logger.info("'No to all' selected. Skipping '" + file + "'");
 					return;
+				}
+				if (yesToAll) {
+					logger.info("'Yes to all' selected. Overwriting '" + file + "'");
+				}
+				else {
+					int option = panel.optionsDialog("The file '" + targetFile
+							+ "' already exists"
+							+ "\nand is newer than the file you wish to sync with."
+							+ "\nDo you wish to overwrite this file?",
+							"Target File Is Newer!", JOptionPane.QUESTION_MESSAGE);
+					
+					// options = {"Yes to all", "Yes", "No", "No to all"};
+					if (option == 0) {
+						logger.info("Setting 'Yes to all' to true");
+						logger.info("'Yes to all' selected. Overwriting '" + file + "'");
+						yesToAll = true;
+					}
+					else if (option == 2) {
+						logger.info("Skipping '" + file + "' because it already exists and is newer");
+						return;
+					}
+					else if (option == 3) {
+						logger.info("Setting 'No to all' to true");
+						logger.info("'No to all' selected. Skipping '" + file + "'");
+						noToAll = true;
+						return;
+					}
 				}
 			} else
 				try {
@@ -119,6 +146,7 @@ public class SyncFilesTask extends SwingWorker<Boolean, Double> {
 									+ "'", "ERROR!", JOptionPane.ERROR_MESSAGE);
 					logger.error("Could not copy '" + file.getAbsolutePath() + "'");
 					e.printStackTrace();
+					cancel(true);
 				}
 		}
 		syncNewFile(file, targetFile);
@@ -137,6 +165,7 @@ public class SyncFilesTask extends SwingWorker<Boolean, Double> {
 							+ "'", "ERROR!", JOptionPane.ERROR_MESSAGE);
 			logger.error("Could not copy '" + file.getAbsolutePath() + "'");
 			e.printStackTrace();
+			cancel(true);
 		}
 		logger.info("Copied '" + file + "' to '" + targetFile + "'");
 	}

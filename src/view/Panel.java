@@ -166,8 +166,9 @@ public class Panel extends JPanel {
 		JOptionPane.showMessageDialog(this, msg, title, msgType);
 	}
 	
-	public int confirmDialog(String msg, String title, int msgType) {
-		return JOptionPane.showConfirmDialog(this, msg, title, JOptionPane.YES_NO_OPTION);
+	public int optionsDialog(String msg, String title, int msgType) {
+		Object[] options = {"Yes to ALL", "Yes", "No", "No to ALL"};
+		return JOptionPane.showOptionDialog(this, msg, title, JOptionPane.YES_NO_CANCEL_OPTION, msgType, null, options, options[3]);
 	}
 
 	public void createProgressMonitor() {
